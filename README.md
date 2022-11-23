@@ -1,4 +1,4 @@
-# SQLGrep: Grep in MySQL database data. 
+# SQLGrep: Grep in MySQL database tables / fields
 
 *If you do not know db schema (drank a lot yesterday or hacking alien starhip database)*
 
