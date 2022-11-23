@@ -34,9 +34,9 @@ libro(id=24087)/title AAA! - Busi Aldo. - Bompiani, Assaggi, - 2010
 ~~~
 
 ## Speed
-sqlgrep does one SQL SELECT ... WHERE query for each field in database. So, for db with 5 tables and 10 fields in each, there will be 50 queries (send/receive query itself is very fast). All filtering are performed on database side (not in our slow python code), so it goes with maximal speed.
+sqlgrep does one SQL SELECT ... WHERE query for each field in database. So, for db of 5 tables and 10 fields in each, there will be 50 queries (sending query to db is very simple and fast operation). All filtering are performed on database side (not in our slow python code), so it goes with maximal speed.
 
-## Narrow your search and avoid False positives
+## Narrow your search and avoid false positives
 Because of MySQL magic, sometimes empty/null values or other types are matched. To avoid it, use `--types TND` option. It will limit, which types of fields to examine. `T` is for all text fields (text, char, varchar), `N` for all numbers (decimal, int, smallint) and `D` for date and datetime. If you do not want to search in DATE/DATETIME fields, just use `--types TN`. Also, this will speed-up sqlgrep a little (if you look for price, most likely you do not need to search it in many large text fields).
 
 Use `--tables Table1 Table2 Table3 ...` to search only in specific tables: 
@@ -50,5 +50,7 @@ By default, it tries to connect over FIFO socket (if it's found on system)
 
 ## Output options
 `--all` - show full records (`SELECT * ...` result) for matching rows.
+
 `--suppress` - do not print value of field, only table name, primary key value (if table has it) and field name, but not it's value. (To keep output short)
+
 `-v` / `--verbose` - verbose
