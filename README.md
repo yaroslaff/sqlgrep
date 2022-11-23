@@ -1,8 +1,8 @@
 # SQLGrep: Grep in MySQL database tables / fields
 
-*If you do not know db schema (drank a lot yesterday or hacking alien starhip database)*
+*If you do not know db schema (drank a lot yesterday, first day on new project or hacking alien starhip database)*
 
-SQLGrep will examine db schema and search (SELECT ... WHERE) for requred text/number/regex/like in all fields of all tables.
+SQLGrep will examine db schema and search (`SELECT ... WHERE ...`) for specified text/number/regex/like (needle) in all fields of all tables.
 
 ## Install
 `pip3 install sqlgrep`
@@ -39,7 +39,10 @@ sqlgrep does one SQL SELECT ... WHERE query for each field in database. So, for 
 ## Narrow your search and avoid False positives
 Because of MySQL magic, sometimes empty/null values or other types are matched. To avoid it, use `--types TND` option. It will limit, which types of fields to examine. `T` is for all text fields (text, char, varchar), `N` for all numbers (decimal, int, smallint) and `D` for date and datetime. If you do not want to search in DATE/DATETIME fields, just use `--types TN`. Also, this will speed-up sqlgrep a little (if you look for price, most likely you do not need to search it in many large text fields).
 
-Use `--tables Table1 Table2 Table3 ...` to search only in specific tables: `sqlgrep --like --table libro -- libro Artillery%`
+Use `--tables Table1 Table2 Table3 ...` to search only in specific tables: 
+~~~
+sqlgrep --like --table libro -- librodb Artillery%`
+~~~
 
 ## Database credentials
 sqlgrep uses environment variables `MYSQL_HOST` (`--host`), `MYSQL_SOCKET` (`--socket`), `MYSQL_USER` (`-u`), `MYSQL_PASS` (`-p`).
