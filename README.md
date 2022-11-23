@@ -51,6 +51,6 @@ By default, it tries to connect over FIFO socket (if it's found on system)
 ## Output options
 `--all` - show full records (`SELECT * ...` result) for matching rows.
 
-`--suppress` - do not print value of field, only table name, primary key value (if table has it) and field name, but not it's value. (To keep output short)
+`--suppress` - do not print value of field, only table name, primary key value (if table has it) and field name, but not it's value. (To keep output short and clean)
 
 `-v` / `--verbose` - verbose
