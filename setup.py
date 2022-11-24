@@ -19,7 +19,7 @@ setup(
     packages=[],
     scripts=['bin/sqlgrep'],
 
-    install_requires=['mysql-connector-python'],
+    install_requires=['mysql-connector-python', 'loguru'],
 
     url='https://github.com/yaroslaff/sqlgrep',
     license='MIT',
@@ -27,7 +27,7 @@ setup(
     long_description=read('README.md'),
     long_description_content_type='text/markdown',
     author_email='yaroslaff@gmail.com',
-    description='grep for data in MySQL',
+    description='grep in all MySQL tables and fields',
     python_requires='>=3.6',
     classifiers=[
         'Development Status :: 3 - Alpha',
