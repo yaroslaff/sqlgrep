@@ -6,7 +6,6 @@ SQLGrep will examine db schema and search (`SELECT ... WHERE ...`) for specified
 
 ## Install
 ~~~
-apt install libmariadb-dev
 pip3 install sqlgrep
 ~~~
 

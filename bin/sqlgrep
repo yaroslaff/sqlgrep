@@ -9,7 +9,7 @@ import sys
 import pymysql
 
 
-version='0.0.3'
+version='0.0.5'
 
 def get_mysql_socket(defsocket):
     
@@ -96,54 +96,55 @@ def main():
 
 
             for field in field_list:
-                log.debug("Grepping table {} field {}".format(table, field))
-                t = (needle,)
-                log.debug(t)
-                
-                if args.all:
-                    flist='*'
-                elif pkfield:
-                    flist = '{}, {}'.format(pkfield, field)
-                else:
-                    flist = field
-                
-                if args.like:
-                    cmp = 'LIKE'
-                elif args.regexp:
-                    cmp = 'REGEXP'
-                else:
-                    cmp = '='
-
-                if args.limit:
-                    limitstr = " LIMIT {}".format(limit)
-                else:
-                    limitstr = ""
-
-                query = """SELECT {} FROM {} WHERE {} {} %s {}""".format(flist, table, field, cmp, limitstr)
-                log.debug(query)
-
-                # c = db.cursor()
-                c.execute(query, t)
-
-                for r in c:
-
-                    if pkfield:
-                        idstr = '({}={})'.format(pkfield, r[pkfield])
-                    else:
-                        idstr = ''
-
-                    s = "{}{}/{} ".format(table, idstr, field)
-
+                try:
+                    log.debug("Grepping table {} field {}".format(table, field))
+                    t = (needle,)
+                    log.debug(t)
+                    
                     if args.all:
-                        s+= str(r)
+                        flist='*'
+                    elif pkfield:
+                        flist = '`{}`, `{}`'.format(pkfield, field)
+                    else:
+                        flist = '`{}`'.format(field)
+                    
+                    if args.like:
+                        cmp = 'LIKE'
+                    elif args.regexp:
+                        cmp = 'REGEXP'
+                    else:
+                        cmp = '='
 
-                    elif not args.suppress:                        
-                        s += str(r[field])
+                    if args.limit:
+                        limitstr = " LIMIT {}".format(limit)
+                    else:
+                        limitstr = ""
 
-                    print(s)
-                    if limit:
-                        limit -= 1
+                    query = """SELECT {} FROM {} WHERE `{}` {} %s {}""".format(flist, table, field, cmp, limitstr)
+                    log.debug(query)
 
+                    c.execute(query, t)
+
+                    for r in c:
+
+                        if pkfield:
+                            idstr = '({}={})'.format(pkfield, r[pkfield])
+                        else:
+                            idstr = ''
+
+                        s = "{}{}/{} ".format(table, idstr, field)
+
+                        if args.all:
+                            s+= str(r)
+
+                        elif not args.suppress:                        
+                            s += str(r[field])
+
+                        print(s)
+                        if limit:
+                            limit -= 1
+                except pymysql.err.ProgrammingError as e:
+                    log.error("Problem while grepping table {} field {}: {}".format(table, field, e))
 
 if __name__ == '__main__':
     main()
