@@ -5,7 +5,10 @@
 SQLGrep will examine db schema and search (`SELECT ... WHERE ...`) for specified text/number/regex/like (needle) in all fields of all tables.
 
 ## Install
-`pip3 install sqlgrep`
+~~~
+apt install libmariadb-dev
+pip3 install sqlgrep
+~~~
 
 ## Examples
 I use test db with just one table, so all found records will be in "libro" table.

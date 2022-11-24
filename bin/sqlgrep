@@ -2,40 +2,14 @@
 
 import argparse
 import os
-import mysql.connector
-from contextlib import ContextDecorator
+# import mysql.connector
+# import mariadb
 from loguru import logger as log
 import sys
+import pymysql
 
 
-version='0.0.2'
-
-class MySQLizer(ContextDecorator):
-    def __init__(self, db, host, socket, user, password):
-        self.db = db
-        self.host = host
-        self.socket = socket
-        self.user = user
-        self.password = password
-
-    def __enter__(self):
-        if self.socket:
-            log.debug("Connect to socket {}".format(self.socket))
-            self.cnx = mysql.connector.connect(unix_socket=self.socket, user=self.user, passwd=self.password, database=self.db)
-        else:
-            log.debug("Connect to host {}".format(self.host))
-
-            self.cnx = mysql.connector.connect(host=self.host, user=self.user, passwd=self.password, database=self.db)
-        self.cursor = self.cnx.cursor(prepared=True)
-        self.cursor2 = self.cnx.cursor(prepared=True)
-        log.debug("Connected!")
-        return self
-
-    def __exit__(self, *exc):
-        log.debug("Close mysql connection")
-        self.cursor.close()
-        self.cnx.close()        
-        return False
+version='0.0.3'
 
 def get_mysql_socket(defsocket):
     
@@ -74,33 +48,35 @@ def main():
 
     if not args.verbose:
         log.remove()
-        log.add(sys.stderr, level="INFO")        
+    log.add(sys.stderr, level="INFO")        
 
-    log.debug("DEBUG message")
+    log.debug("Verbose logging")
 
     tables = args.tables
     needle = args.needle
     limit = args.limit
 
-
-    with MySQLizer(args.dbname, args.host, args.socket, args.user, args.password) as dbc:
+    with pymysql.connect(
+                unix_socket=args.socket, host = args.host, user=args.user, passwd=args.password, database=args.dbname,
+                    cursorclass=pymysql.cursors.DictCursor) as db:
 
         if not tables:
             # fill table when none provided
-            dbc.cursor.execute("SHOW TABLES;")
-            for tname in dbc.cursor:
-                log.debug("Detected table {}".format(tname[0]))
-                tables.append(tname[0])
+            c = db.cursor(pymysql.cursors.Cursor)
+            c.execute("SHOW TABLES")
+            tables = [ t[0] for t in c.fetchall() ]
         
-
 
         for table in tables:
             log.debug("Examine table: {}".format(table))
-            dbc.cursor.execute("DESC {}".format(table))
+            # dbc.cursor.execute("DESC {}".format(table))
             pkfield = None
             field_list = list()
-            for ftuple in dbc.cursor:
-                field = dict(zip(dbc.cursor.column_names, ftuple))
+
+
+            c = db.cursor()
+            c.execute("DESC {}".format(table))
+            for field in c:
                 log.debug(field)
                 ftype = field['Type'].split('(')[0]
                 
@@ -115,6 +91,8 @@ def main():
 
                 elif ftype in ['date', 'datetime'] and 'D' in args.types:
                     field_list.append(field['Field'])
+                else:
+                    log.debug("Skip field {}".format(field))
 
 
             for field in field_list:
@@ -144,24 +122,23 @@ def main():
                 query = """SELECT {} FROM {} WHERE {} {} %s {}""".format(flist, table, field, cmp, limitstr)
                 log.debug(query)
 
-                dbc.cursor.execute(query, t)
-                for r in dbc.cursor:
-                    result = dict(zip(dbc.cursor.column_names, r))
-                    #if result[field] is None:
-                    #    continue
+                # c = db.cursor()
+                c.execute(query, t)
+
+                for r in c:
 
                     if pkfield:
-                        idstr = '({}={})'.format(pkfield, result[pkfield])
+                        idstr = '({}={})'.format(pkfield, r[pkfield])
                     else:
                         idstr = ''
 
                     s = "{}{}/{} ".format(table, idstr, field)
 
                     if args.all:
-                        s+= str(result)
+                        s+= str(r)
 
                     elif not args.suppress:                        
-                        s += str(result[field])
+                        s += str(r[field])
 
                     print(s)
                     if limit:

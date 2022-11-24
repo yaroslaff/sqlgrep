@@ -19,7 +19,7 @@ setup(
     packages=[],
     scripts=['bin/sqlgrep'],
 
-    install_requires=['mysql-connector-python', 'loguru'],
+    install_requires=['PyMySQL', 'loguru'],
 
     url='https://github.com/yaroslaff/sqlgrep',
     license='MIT',
