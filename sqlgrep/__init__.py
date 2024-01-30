@@ -13,7 +13,7 @@ from sqlalchemy.orm import sessionmaker
 import sqlalchemy as sa
 
 
-__version__='0.0.10'
+__version__='0.0.12'
 
 def get_args():
 
@@ -73,7 +73,7 @@ def search_column(session, table, column, needle):
     try:
         result = query.all()
     except (Exception, TypeError) as e:
-        print(f"EXCEPTION: {type(e)} in {table.__table__.table_name}/{column}")
+        print(f"EXCEPTION: {type(e)} in {column}")
         return
 
     # Print the results
