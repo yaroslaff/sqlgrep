@@ -1,4 +1,0 @@
-# mysql-connector-python
-# mariadb
-PyMySQL
-loguru

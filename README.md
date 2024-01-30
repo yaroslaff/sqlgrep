@@ -5,13 +5,21 @@
 SQLGrep will examine db schema and search (`SELECT ... WHERE ...`) for specified text/number/regex/like (needle) in all fields of all tables.
 
 ## Install
+
+To install mysql version on debian you may need to:
 ~~~
-# new way, use pipx if you can use (with mysql packages)
+apt install pkg-config libmariadb-dev
+~~~
+
+Installation:
+~~~
+# new way, use pipx if you can (with mysql packages)
 pipx install sqlgrep[mysql]
 
 # old-fashioned way  (and postgresql support)
 pip install sqlgrep[postgresql]
 ~~~
+
 
 ## Examples
 I use test db with just one table, so all found records will be in "libro" table.

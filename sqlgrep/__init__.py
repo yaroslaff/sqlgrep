@@ -13,7 +13,7 @@ from sqlalchemy.orm import sessionmaker
 import sqlalchemy as sa
 
 
-__version__='0.0.6'
+__version__='0.0.7'
 
 def get_args():
 
@@ -70,8 +70,11 @@ def search_column(session, table, column, needle):
             print(f"{column}: {count} rows matched")
         return
     
-    
-    result = query.all()
+    try:
+        result = query.all()
+    except TypeError as e:
+        print(f"Table: {table}, column: {column} EXCEPTION: {e}")
+        return
 
     # Print the results
     for row in result:
@@ -83,9 +86,6 @@ def search_column(session, table, column, needle):
 
 def main():
     global args
-    global engine
-    global conn
-    global Base
 
     args = get_args()
 
@@ -108,7 +108,7 @@ def main():
     for table_name, table in Base.classes.items():
         if args.tables and table_name not in args.tables:
             continue
-        for column in track(table.__table__.columns, transient=True):
+        for column in track(table.__table__.columns, transient=True, description=table_name):
             search_column(session, table, column, needle)
 
 
