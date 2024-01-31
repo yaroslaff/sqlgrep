@@ -47,6 +47,8 @@ sqlgrep does one SQL SELECT ... WHERE query for each field in database. So, for 
 ## Database credentials
 Specify database as SQLAlchemy URL like `mysql://user:password@host/db_name` (or `postgresql://...`)
 
+See SQLAlchemy [Engine Configuration](https://docs.sqlalchemy.org/en/20/core/engines.html) for details.
+
 ## Usage
 ~~~
 usage: sqlgrep [-h] [--host HOST] [-t TABLES [TABLES ...]] [--like] [--float] [--int] [--limit N] [-c] [--all]
