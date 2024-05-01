@@ -13,7 +13,7 @@ from sqlalchemy.orm import sessionmaker
 import sqlalchemy as sa
 
 
-__version__='0.0.12'
+__version__='0.0.13'
 
 def get_args():
 

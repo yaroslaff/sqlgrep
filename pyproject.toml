@@ -16,7 +16,7 @@ dependencies = [
 authors = [
   { name="Yaroslav Polyakov", email="yaroslaff@gmail.com" },
 ]
-description = "Simple OpenSSL for humans: fetch/validate/show/save SSL certificates and warn about soon expiration"
+description = "Find string anywhere in database"
 readme = "README.md"
 requires-python = ">=3.8"
 classifiers = [
