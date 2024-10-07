@@ -8,7 +8,7 @@ SQLGrep will examine db schema and search (`SELECT ... WHERE ...`) for specified
 
 To install mysql version on debian you may need to:
 ~~~
-apt install pkg-config libmariadb-dev
+apt install pkg-config libmariadb-dev python3-dev
 ~~~
 
 Installation:
