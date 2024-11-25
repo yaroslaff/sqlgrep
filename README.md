@@ -41,6 +41,8 @@ libro(id=1359) titolo: 'STUDI MICENEI ED EGEO-ANATOLICI. Fascicolo ottavo.'
 libro(id=1367) titolo: 'IL TORO DI MINOSSE. Creta, il Minotauro e la civiltà micenea.'
 ~~~
 
+To look in database via socket connection use URL `mysql:///dbname` .
+
 ## Speed
 sqlgrep does one SQL SELECT ... WHERE query for each field in database. So, for db of 5 tables and 10 fields in each, there will be 50 queries (sending query to db is very simple and fast operation). All filtering are performed on database side (not in our slow python code), so it goes with maximal speed.
 
