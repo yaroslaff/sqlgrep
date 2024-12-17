@@ -13,7 +13,7 @@ from sqlalchemy.orm import sessionmaker
 import sqlalchemy as sa
 
 
-__version__='0.0.13'
+__version__='0.0.14'
 
 def get_args():
 
@@ -93,7 +93,21 @@ def main():
     needle = args.needle
     limit = args.limit
 
-    engine = create_engine(args.db)
+    try:
+        engine = create_engine(args.db)
+    except ModuleNotFoundError as e:
+        print(e)
+        print("Install with proper extras, e.g. sqlgrep[mysql] or sqlgrep[postgresql]")
+
+        if e.name == 'MySQLdb':
+            print("If installed with pipx:  pipx inject sqlgrep mysqlclient")
+            print("If installed with pip:   pip install mysqlclient")
+
+        print()
+        print("See full README at https://github.com/yaroslaff/sqlgrep")
+
+        sys.exit(1)
+
     Base = automap_base()
     Base.prepare(engine, reflect=True)
     # session = Session(engine)
