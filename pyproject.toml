@@ -17,7 +17,7 @@ dependencies = [
 authors = [
   { name="Yaroslav Polyakov", email="yaroslaff@gmail.com" },
 ]
-description = "Find string anywhere in database"
+description = "Find string anywhere in SQL database"
 readme = "README.md"
 requires-python = ">=3.8"
 classifiers = [

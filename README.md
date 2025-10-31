@@ -1,4 +1,4 @@
-# SQLGrep: Grep in MySQL database tables / fields
+# SQLGrep: Grep in SQL database tables / fields
 
 *If you do not know db schema (drank a lot yesterday, first day on new project or hacking alien starhip database)*
 
@@ -19,6 +19,8 @@ pipx install sqlgrep[mysql]
 # old-fashioned way  (and postgresql support)
 pip install sqlgrep[postgresql]
 ~~~
+
+sqlite3 is supported by Python natively (just install "sqlgrep").
 
 
 ## Examples
